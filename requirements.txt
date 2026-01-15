@@ -1,0 +1,8 @@
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.5.1
+catboost==1.2.7
+evidently==0.4.30
+fairlearn==0.10.0
+prometheus-client==0.20.0
+joblib==1.4.2

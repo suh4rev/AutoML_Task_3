@@ -1,0 +1,53 @@
+services:
+  telegram_webhook:
+    build:
+      context: ./telegram_webhook
+    container_name: telegram_webhook
+    environment:
+      - TELEGRAM_BOT_TOKEN=8575502646:AAGLa1cKs2uQlEa9WLwg4nR1HY6FbJIAtmY
+      - TELEGRAM_CHAT_ID=1257717631
+    ports:
+      - "5001:5001"   # можно убрать, если с хоста не нужно дергать
+
+  exporter:
+    build:
+      context: ./exporter
+    container_name: exporter
+    environment:
+      - REF_PATH=/shared/reference_batch.joblib
+      - CUR_PATH=/shared/current_batch.joblib
+      - SWITCH_AFTER_SEC=120
+      - PORT=8000
+    volumes:
+      # экспортер читает файлы с хоста (Windows) через bind-mount
+      - ./shared:/shared:ro
+    ports:
+      # опционально (для проверки в браузере)
+      - "8000:8000"
+
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: prometheus
+    depends_on:
+      - exporter
+      - alertmanager
+    ports:
+      - "9090:9090"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.enable-lifecycle"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alert.rules.yml:/etc/prometheus/alert.rules.yml:ro
+      - ./data/prometheus:/prometheus
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    container_name: alertmanager
+    ports:
+      - "9093:9093"
+    command:
+      - "--config.file=/etc/alertmanager/alertmanager.yml"
+    volumes:
+      - ./monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro

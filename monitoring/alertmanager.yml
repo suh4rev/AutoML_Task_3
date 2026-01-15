@@ -1,0 +1,8 @@
+route:
+  receiver: telegram
+
+receivers:
+- name: telegram
+  webhook_configs:
+  - url: "http://telegram_webhook:5001/alert"
+    send_resolved: true

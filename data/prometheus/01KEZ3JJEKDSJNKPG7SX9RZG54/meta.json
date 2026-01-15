@@ -1,0 +1,17 @@
+{
+	"ulid": "01KEZ3JJEKDSJNKPG7SX9RZG54",
+	"minTime": 1768197710117,
+	"maxTime": 1768204800000,
+	"stats": {
+		"numSamples": 6716,
+		"numSeries": 46,
+		"numChunks": 67
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01KEZ3JJEKDSJNKPG7SX9RZG54"
+		]
+	},
+	"version": 1
+}
