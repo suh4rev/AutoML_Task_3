@@ -16,7 +16,7 @@ services:
     environment:
       - REF_PATH=/shared/reference_batch.joblib
       - CUR_PATH=/shared/current_batch.joblib
-      - SWITCH_AFTER_SEC=120
+      - SWITCH_AFTER_SEC=30
       - PORT=8000
     volumes:
       # экспортер читает файлы с хоста (Windows) через bind-mount
